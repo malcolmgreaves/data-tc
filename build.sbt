@@ -10,7 +10,7 @@ version in ThisBuild      := {
 import SharedBuild._
 com.typesafe.sbt.SbtScalariform.defaultScalariformSettings
 ScalariformKeys.preferences := sharedCodeFmt
-
+ 
 lazy val root = project
   .in(file("."))
   .aggregate(
