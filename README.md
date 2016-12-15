@@ -1,6 +1,6 @@
 # data-tc
 
-[![Build Status](https://travis-ci.org/malcolmgreaves/data-tc.svg?branch=master)](https://travis-ci.org/malcolmgreaves/data-tc) [![Coverage Status](https://coveralls.io/repos/malcolmgreaves/data-tc/badge.svg?branch=master&service=github)](https://coveralls.io/github/malcolmgreaves/data-tc?branch=master)
+[![Build Status](https://circleci.com/gh/malcolmgreaves/data-tc.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/malcolmgreaves/data-tc) [![Coverage Status](https://coveralls.io/repos/malcolmgreaves/data-tc/badge.svg?branch=master&service=github)](https://coveralls.io/github/malcolmgreaves/data-tc?branch=master)
  [![Codacy Badge](http://api.codacy.com:80/project/badge/7a4fbaf2cbe6449993224d6eb4df0f13)](https://www.codacy.com/app/greavesmalcolm/data-tc) [![Stories in Ready](https://badge.waffle.io/malcolmgreaves/data-tc.png?label=ready&title=Ready)](https://waffle.io/malcolmgreaves/data-tc)  [![Join the chat at https://gitter.im/malcolmgreaves/data-tc](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/malcolmgreaves/data-tc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.malcolmgreaves/data-tc-scala_2.11/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/io.malcolmgreaves/data-tc-scala_2.11)
 
 A unifying typeclass describing collections and higher-order data transformation and manipulation actions common to a wide variety of data processing tasks. Inspired by the Scala collections API.

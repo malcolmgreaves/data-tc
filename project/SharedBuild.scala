@@ -36,6 +36,7 @@ object SharedBuild {
     "com.twitter"      %  "parquet-avro"    % parquetVer,
     "com.twitter"      %  "parquet-hadoop"  % parquetVer,
     "com.twitter"      %  "parquet-column"  % parquetVer,
+    "io.netty" % "netty" % "3.6.2.Final",
     // Testing
     "com.holdenkarau" %% "spark-testing-base" % s"${sparkVer}_0.4.7" % Test
   )
