@@ -2,7 +2,7 @@ package fif
 
 import org.apache.spark.rdd.RDD
 
-import scala.language.{ higherKinds, implicitConversions }
+import scala.language.{higherKinds, implicitConversions}
 import scala.reflect.ClassTag
 import scala.util.Try
 
@@ -12,7 +12,8 @@ object RddData extends Data[RDD] with Serializable {
   override def map[A, B: ClassTag](data: RDD[A])(f: (A) => B): RDD[B] =
     data.map(f)
 
-  override def mapParition[A, B: ClassTag](d: RDD[A])(f: Iterable[A] => Iterable[B]): RDD[B] =
+  override def mapParition[A, B: ClassTag](d: RDD[A])(
+      f: Iterable[A] => Iterable[B]): RDD[B] =
     d.mapPartitions { partition =>
       f(partition.toIterable).toIterator
     }
@@ -33,11 +34,13 @@ object RddData extends Data[RDD] with Serializable {
   override def filter[A](d: RDD[A])(f: A => Boolean): RDD[A] =
     d.filter(f)
 
-  override def aggregate[A, B: ClassTag](d: RDD[A])(zero: B)(seqOp: (B, A) => B, combOp: (B, B) => B): B =
+  override def aggregate[A, B: ClassTag](d: RDD[A])(
+      zero: B)(seqOp: (B, A) => B, combOp: (B, B) => B): B =
     d.aggregate(zero)(seqOp, combOp)
 
   /** Sort the dataset using a function f that evaluates each element to an orderable type */
-  override def sortBy[A, B: ClassTag](d: RDD[A])(f: (A) ⇒ B)(implicit ord: math.Ordering[B]): RDD[A] =
+  override def sortBy[A, B: ClassTag](d: RDD[A])(f: (A) ⇒ B)(
+      implicit ord: math.Ordering[B]): RDD[A] =
     d.sortBy(f)
 
   /** Construct a traversable for the first k elements of a dataset. Will load into main mem. */
@@ -51,13 +54,16 @@ object RddData extends Data[RDD] with Serializable {
   override def toSeq[A](d: RDD[A]): Seq[A] =
     d.collect().toSeq
 
-  override def flatMap[A, B: ClassTag](d: RDD[A])(f: A => TraversableOnce[B]): RDD[B] =
+  override def flatMap[A, B: ClassTag](d: RDD[A])(
+      f: A => TraversableOnce[B]): RDD[B] =
     d.flatMap(f)
 
-  override def flatten[A, B: ClassTag](d: RDD[A])(implicit asRDD: A => TraversableOnce[B]): RDD[B] =
+  override def flatten[A, B: ClassTag](d: RDD[A])(
+      implicit asRDD: A => TraversableOnce[B]): RDD[B] =
     d.flatMap(asRDD)
 
-  override def groupBy[A, B: ClassTag](d: RDD[A])(f: A => B): RDD[(B, Iterable[A])] =
+  override def groupBy[A, B: ClassTag](d: RDD[A])(
+      f: A => B): RDD[(B, Iterable[A])] =
     d.groupBy(f).map { case (a, b) => (a, b) }
 
   /** This has type A as opposed to B >: A due to the RDD limitations */

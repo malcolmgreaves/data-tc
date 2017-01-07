@@ -4,21 +4,20 @@ import com.holdenkarau.spark.testing.SharedSparkContext
 import org.scalatest.FunSuite
 
 /**
- * Tests SparkModule higher-order-functions.
- */
+  * Tests SparkModule higher-order-functions.
+  */
 class RddSerializedOpsTest extends FunSuite with SharedSparkContext {
 
   import RddSerializedOpsTest._
 
   /**
-   * In class (vs. companion object) so that we have access to `assert` from `FunSuite`.
-   */
+    * In class (vs. companion object) so that we have access to `assert` from `FunSuite`.
+    */
   private def checkResults[A](correct: Seq[A], results: Seq[A]): Unit =
-    correct.zip(results)
-      .foreach {
-        case (c, r) =>
-          assert(c === r)
-      }
+    correct.zip(results).foreach {
+      case (c, r) =>
+        assert(c === r)
+    }
 
   test("Map") {
     val f = (s: String) => s"${s}_$s"
@@ -43,7 +42,7 @@ class RddSerializedOpsTest extends FunSuite with SharedSparkContext {
       if (!(dumbDataSet contains s))
         throw new RuntimeException(s"unexpected input: $s")
       else
-        Unit
+      Unit
     val foreacher = RddSerializedOps.Foreach(f)
 
     foreacher(sc.parallelize(dumbData))

@@ -19,7 +19,8 @@ class ToMapTest extends FunSuite {
 
   test("ToMap list of many elements") {
     val l = Traversable(
-      ("hello", 10), ("hello", 20),
+      ("hello", 10),
+      ("hello", 20),
       ("world", 30),
       ("sunday funday", 40),
       ("sunday funday", 50),

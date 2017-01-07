@@ -23,12 +23,13 @@ class RddHelpersTest extends FunSuite with SharedSparkContext {
 
   test("serialize and deserialize same RDD, ensure contents do not change") {
     runWithTemp(deleteBefore = true) { temp =>
-
       val rddEntities = sc.parallelize(entities)
-      RddHelpers.saveRddAsParquet[SampleEntity](sc)(temp.getAbsolutePath)(rddEntities)
+      RddHelpers.saveRddAsParquet[SampleEntity](sc)(temp.getAbsolutePath)(
+        rddEntities)
 
       val loadedRddEntities =
-        RddHelpers.rddFromParquet[SampleEntity](sc)(temp.getAbsolutePath)
+        RddHelpers
+          .rddFromParquet[SampleEntity](sc)(temp.getAbsolutePath)
           .sortBy(sortFn)
 
       rddEntities
@@ -45,11 +46,13 @@ class RddHelpersTest extends FunSuite with SharedSparkContext {
 
 object RddHelpersTest {
 
-  val preSerializedRddDocumentEntitiesPath = "data-tc-spark/src/test/resources/avroparquet_sample_entities_rdd/"
+  val preSerializedRddDocumentEntitiesPath =
+    "data-tc-spark/src/test/resources/avroparquet_sample_entities_rdd/"
 
   def runWithTemp(deleteBefore: Boolean)(f: File => Unit): Unit =
     synchronized {
-      val temp = File.createTempFile("sparkmod-RddHelpersTest", UUID.randomUUID().toString)
+      val temp = File.createTempFile("sparkmod-RddHelpersTest",
+                                     UUID.randomUUID().toString)
       try {
         if (deleteBefore)
           temp.delete()
@@ -99,7 +102,6 @@ object RddHelpersTest {
         "MONEY",
         Vector(42)
       )
-    )
-      .sortBy(sortFn)
+    ).sortBy(sortFn)
 
 }

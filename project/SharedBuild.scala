@@ -52,29 +52,28 @@ object SharedBuild {
   lazy val scalaMacros =
     "org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full
 
-  //////////////////////////////////////////////////
-  //   Code formatting settings for scalariform   //
-  //////////////////////////////////////////////////
 
-  lazy val sharedCodeFmt = {
-    import scalariform.formatter.preferences._
-    FormattingPreferences()
-      .setPreference(AlignParameters,                            true  )
-      .setPreference(AlignSingleLineCaseStatements,              true  )
-      .setPreference(CompactControlReadability,                  false )
-      .setPreference(CompactStringConcatenation,                 true  )
-      .setPreference(DoubleIndentClassDeclaration,               true  )
-      .setPreference(FormatXml,                                  true  )
-      .setPreference(IndentLocalDefs,                            true  )
-      .setPreference(IndentPackageBlocks,                        true  )
-      .setPreference(IndentSpaces,                               2     )
-      .setPreference(MultilineScaladocCommentsStartOnFirstLine,  false )
-      .setPreference(PreserveDanglingCloseParenthesis,           true  )
-      .setPreference(PreserveSpaceBeforeArguments,               false )
-      .setPreference(RewriteArrowSymbols,                        false )
-      .setPreference(SpaceBeforeColon,                           false )
-      .setPreference(SpaceInsideBrackets,                        false )
-      .setPreference(SpacesWithinPatternBinders,                 true  )
-  }
+  lazy val pomExtraInfo = {
+    <url>https://github.com/malcolmgreaves/data-tc</url>
+    <licenses>
+      <license>
+        <name>Apache 2.0</name>
+        <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        <distribution>repo</distribution>
+      </license>
+    </licenses>
+    <scm>
+      <url>git@github.com:malcolmgreaves/data-tc.git</url>
+      <connection>scm:git@github.com:malcolmgreaves/data-tc.git</connection>
+    </scm>
+    <developers>
+      <developer>
+        <id>malcolmgreaves</id>
+        <name>Malcolm Greaves</name>
+        <email>greaves.malcolm@gmail.com</email>
+        <url>https://malcolmgreaves.io/</url>
+      </developer>
+    </developers>
+ }
 
 }

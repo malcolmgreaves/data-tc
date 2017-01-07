@@ -2,16 +2,15 @@ name := "data-tc-flink"
 
 import SharedBuild._
 
-com.typesafe.sbt.SbtScalariform.defaultScalariformSettings
-ScalariformKeys.preferences := sharedCodeFmt
-
 addCompilerPlugin(scalaMacros)
 
-libraryDependencies ++= 
+libraryDependencies ++=
   flinkTcDeps ++
-  testDeps
+    testDeps
 
 testOptions in Test += Tests.Argument(TestFrameworks.JUnit, "-v")
 testOptions in Test += Tests.Argument("-oF")
-fork              in Test := true
+fork in Test := true
 parallelExecution in Test := true
+
+pomExtra := pomExtraInfo

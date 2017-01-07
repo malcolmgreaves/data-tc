@@ -6,11 +6,12 @@ import scala.reflect.ClassTag
 import simulacrum._
 
 /**
- * Trait that abstractly represents operations that can be performed on a dataset.
- * The implementation of Data is suitable for both large-scale, distributed data
- * or in-memory structures.
- */
-@typeclass trait Data[D[_]] extends Serializable {
+  * Trait that abstractly represents operations that can be performed on a dataset.
+  * The implementation of Data is suitable for both large-scale, distributed data
+  * or in-memory structures.
+  */
+@typeclass
+trait Data[D[_]] extends Serializable {
 
   /** Transform a dataset by applying f to each element. */
   def map[A, B: ClassTag](d: D[A])(f: A => B): D[B]
@@ -25,13 +26,15 @@ import simulacrum._
   def filter[A](d: D[A])(f: A => Boolean): D[A]
 
   /**
-   * Starting from a defined zero value, perform an operation seqOp on each element
-   * of a dataset. Combine results of seqOp using combOp for a final value.
-   */
-  def aggregate[A, B: ClassTag](d: D[A])(zero: B)(seqOp: (B, A) => B, combOp: (B, B) => B): B
+    * Starting from a defined zero value, perform an operation seqOp on each element
+    * of a dataset. Combine results of seqOp using combOp for a final value.
+    */
+  def aggregate[A, B: ClassTag](d: D[A])(zero: B)(seqOp: (B, A) => B,
+                                                  combOp: (B, B) => B): B
 
   /** Sort the dataset using a function f that evaluates each element to an orderable type */
-  def sortBy[A, B: ClassTag](d: D[A])(f: (A) => B)(implicit ord: math.Ordering[B]): D[A]
+  def sortBy[A, B: ClassTag](d: D[A])(f: (A) => B)(
+      implicit ord: math.Ordering[B]): D[A]
 
   /** Construct a traversable for the first k elements of a dataset. Will load into main mem. */
   def take[A](d: D[A])(k: Int): Traversable[A]
@@ -43,7 +46,8 @@ import simulacrum._
 
   def flatMap[A, B: ClassTag](d: D[A])(f: A => TraversableOnce[B]): D[B]
 
-  def flatten[A, B: ClassTag](d: D[A])(implicit asTraversable: A => TraversableOnce[B]): D[B]
+  def flatten[A, B: ClassTag](d: D[A])(
+      implicit asTraversable: A => TraversableOnce[B]): D[B]
 
   def groupBy[A, B: ClassTag](d: D[A])(f: A => B): D[(B, Iterable[A])]
 
@@ -58,4 +62,3 @@ import simulacrum._
   def zipWithIndex[A](d: D[A]): D[(A, Long)]
 
 }
-

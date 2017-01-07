@@ -1,9 +1,9 @@
 package fif
 
 import com.holdenkarau.spark.testing.SharedSparkContext
-import org.apache.spark.{ SparkConf, SparkContext }
+import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.rdd.RDD
-import org.scalatest.{ BeforeAndAfterAll, FunSuite }
+import org.scalatest.{BeforeAndAfterAll, FunSuite}
 
 import scala.language.higherKinds
 import scala.reflect.ClassTag
@@ -47,7 +47,9 @@ class RddDataTest extends FunSuite with SharedSparkContext with Serializable {
   test("mapPartition") {
 
     def mapParition10[D[_]: Data](data: D[Int]): D[Int] =
-      data.mapParition { elements => elements.map(_ + 10) }
+      data.mapParition { elements =>
+        elements.map(_ + 10)
+      }
 
     val changed = mapParition10(data)
     assert(changed !== data)
@@ -95,7 +97,10 @@ class RddDataTest extends FunSuite with SharedSparkContext with Serializable {
   test("take") {
 
     def testTake[D[_]: Data](data: D[Int]): Boolean =
-      data.take(1) == Seq(1) && data.take(2) == Seq(1, 2) && data.take(3) == Seq(1, 2, 3)
+      data.take(1) == Seq(1) && data.take(2) == Seq(1, 2) && data.take(3) == Seq(
+        1,
+        2,
+        3)
 
     assert(testTake(data))
   }
@@ -132,7 +137,9 @@ class RddDataTest extends FunSuite with SharedSparkContext with Serializable {
   test("groupBy") {
 
     def groupIt[D[_]: Data](data: D[Int]): D[(Boolean, Iterable[Int])] =
-      data.groupBy { n => n % 2 == 0 }
+      data.groupBy { n =>
+        n % 2 == 0
+      }
 
     val evenGroup = groupIt(data).toSeq.toMap
 

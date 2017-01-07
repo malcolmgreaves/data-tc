@@ -29,12 +29,14 @@ object ToMap extends Serializable {
     }
   }
 
-  def apply[T: ClassTag, U: ClassTag: Semigroup, D[_]: Data](data: D[(T, U)]): Map[T, U] = {
+  def apply[T: ClassTag, U: ClassTag: Semigroup, D[_]: Data](
+      data: D[(T, U)]): Map[T, U] = {
     implicit val _ = identity[(T, U)] _
     apply[(T, U), T, U, D](data)
   }
 
-  def apply[A, T: ClassTag, U: ClassTag: Semigroup, D[_]: Data](data: D[A])(implicit ev: A <:< (T, U)): Map[T, U] = {
+  def apply[A, T: ClassTag, U: ClassTag: Semigroup, D[_]: Data](data: D[A])(
+      implicit ev: A <:< (T, U)): Map[T, U] = {
 
     val sg = implicitly[Semigroup[U]]
 

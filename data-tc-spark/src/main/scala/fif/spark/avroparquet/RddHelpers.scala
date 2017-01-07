@@ -1,6 +1,10 @@
 package fif.spark.avroparquet
 
-import com.nitro.scalaAvro.runtime.{ GeneratedMessage, Message, GeneratedMessageCompanion }
+import com.nitro.scalaAvro.runtime.{
+  GeneratedMessage,
+  Message,
+  GeneratedMessageCompanion
+}
 import fif.spark.RddSerializedOps
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.mapreduce.Job
@@ -8,7 +12,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import parquet.avro._
-import parquet.hadoop.{ ParquetOutputFormat, ParquetInputFormat }
+import parquet.hadoop.{ParquetOutputFormat, ParquetInputFormat}
 
 import scala.language.postfixOps
 import scala.reflect.ClassTag
@@ -29,30 +33,32 @@ object RddHelpers extends Serializable {
     (null, x)
 
   /**
-   * A unique path (either local or network) to a file or resource.
-   */
+    * A unique path (either local or network) to a file or resource.
+    */
   type Path = String
 
   def getRdd[K: ClassTag, W: ClassTag, F <: FileInputFormat[K, W]: ClassTag](
-    sc: SparkContext
+      sc: SparkContext
   )(
-    p: Path
+      p: Path
   ): RDD[(K, W)] =
     sc.newAPIHadoopFile[K, W, F](p)
 
   /**
-   * Sets ParquetInputFormat's read support for a type of AvroReadSupport[V].
-   * Evaluates to an RDD containg Vs, using Parquet + Avro for reading.
-   */
-  def rddFromParquet[V <: GeneratedMessage with Message[V]: ClassTag: GeneratedMessageCompanion](
-    sc: SparkContext
+    * Sets ParquetInputFormat's read support for a type of AvroReadSupport[V].
+    * Evaluates to an RDD containg Vs, using Parquet + Avro for reading.
+    */
+  def rddFromParquet[
+      V <: GeneratedMessage with Message[V]: ClassTag: GeneratedMessageCompanion](
+      sc: SparkContext
   )(
-    p: Path
+      p: Path
   ): RDD[V] = {
     // protect against deprecated error...can't get around not using Job
     val job = Job.getInstance(new Configuration())
 
-    ParquetInputFormat.setReadSupportClass(job, classOf[GenericAvroReadSupport[V]])
+    ParquetInputFormat
+      .setReadSupportClass(job, classOf[GenericAvroReadSupport[V]])
 
     job.getConfiguration.set(
       GenericAvroReadSupport.HAS_GENERIC_RECORD_KEY,
@@ -60,8 +66,7 @@ object RddHelpers extends Serializable {
     )
 
     // load up that RDD!
-    sc
-      .newAPIHadoopFile(
+    sc.newAPIHadoopFile(
         p,
         classOf[ParquetInputFormat[V]],
         classOf[Void],
@@ -75,7 +80,9 @@ object RddHelpers extends Serializable {
       .map { case (_, value) => value }
   }
 
-  def saveRddAsParquet[V <: GeneratedMessage with Message[V]: ClassTag: GeneratedMessageCompanion](sc: SparkContext)(p: Path)(data: RDD[V]): Unit = {
+  def saveRddAsParquet[
+      V <: GeneratedMessage with Message[V]: ClassTag: GeneratedMessageCompanion](
+      sc: SparkContext)(p: Path)(data: RDD[V]): Unit = {
     // protect against deprecated error...can't get around not using Job
     val job = Job.getInstance(new Configuration())
 
@@ -85,7 +92,8 @@ object RddHelpers extends Serializable {
       implicitly[GeneratedMessageCompanion[V]].schema
     )
 
-    val mapF = RddSerializedOps.Map(implicitly[GeneratedMessageCompanion[V]].toMutable _)
+    val mapF = RddSerializedOps.Map(
+      implicitly[GeneratedMessageCompanion[V]].toMutable _)
 
     mapF(data)
       .map(asVoidTuple)

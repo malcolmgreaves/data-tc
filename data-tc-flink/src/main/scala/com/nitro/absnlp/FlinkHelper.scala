@@ -9,11 +9,11 @@ import scala.language.higherKinds
 import scala.reflect.ClassTag
 
 /**
- * Methods, values, and functions that provide some common functionality
- * necessary for interacting with Flink DataSet objects. Most importantly
- * is the typeInfo method that generates a TypeInformation instance from
- * ClassTag evidence.
- */
+  * Methods, values, and functions that provide some common functionality
+  * necessary for interacting with Flink DataSet objects. Most importantly
+  * is the typeInfo method that generates a TypeInformation instance from
+  * ClassTag evidence.
+  */
 object FlinkHelper extends Serializable {
 
   private[absnlp] val productClass: Class[Product] =
@@ -24,7 +24,6 @@ object FlinkHelper extends Serializable {
     val fields = c.getFields
     if (fields.isEmpty)
       1
-
     else
       fields.foldLeft(0) {
         case (result, field) =>
@@ -32,9 +31,9 @@ object FlinkHelper extends Serializable {
       }
   }
 
-  private type _M[B,A]=Map[B, Iterable[A]]
+  private type _M[B, A] = Map[B, Iterable[A]]
 
-  def mapCombine[B, A](m1: _M[B,A], m2: _M[B,A]): _M[B,A] = {
+  def mapCombine[B, A](m1: _M[B, A], m2: _M[B, A]): _M[B, A] = {
 
     val (larger, smaller) =
       if (m1.size > m2.size)
@@ -66,7 +65,7 @@ object FlinkHelper extends Serializable {
 
     new TypeInformation[A] {
 
-      override def canEqual(x: Any): Boolean = 
+      override def canEqual(x: Any): Boolean =
         x.getClass.isAssignableFrom(ct.runtimeClass)
 
       override lazy val isBasicType: Boolean =
@@ -84,21 +83,19 @@ object FlinkHelper extends Serializable {
       override lazy val getTypeClass: Class[A] =
         ct.runtimeClass.asInstanceOf[Class[A]]
 
-      override lazy val getGenericParameters: java.util.List[TypeInformation[_]] = {
+      override lazy val getGenericParameters: java.util.List[TypeInformation[
+        _]] = {
 
         import scala.collection.JavaConversions._
 
         val tVars = ct.getClass.getTypeParameters
         if (tVars.isEmpty)
           emptyTypeInfoList
-
         else
-          tVars
-            .map { typeVariable =>
-              val genericClass = typeVariable.getGenericDeclaration
-              typeInfo(ClassTag(genericClass))
-            }
-            .toList
+          tVars.map { typeVariable =>
+            val genericClass = typeVariable.getGenericDeclaration
+            typeInfo(ClassTag(genericClass))
+          }.toList
       }
 
       override lazy val isKeyType: Boolean =
@@ -107,19 +104,19 @@ object FlinkHelper extends Serializable {
       override lazy val isSortKeyType: Boolean =
         isKeyType
 
-      override def createSerializer(config: ExecutionConfig): TypeSerializer[A] =
+      override def createSerializer(
+          config: ExecutionConfig): TypeSerializer[A] =
         new KryoSerializer[A](getTypeClass, config)
 
-      override val toString: String = 
+      override val toString: String =
         s"TypeInformation for ${ct.runtimeClass.toString}"
 
-      override def equals(x: Any): Boolean = 
+      override def equals(x: Any): Boolean =
         x != null && x.isInstanceOf[TypeInformation[_]] && this == x
 
-      override val hashCode: Int = 
+      override val hashCode: Int =
         ct.hashCode
     }
   }
 
 }
-

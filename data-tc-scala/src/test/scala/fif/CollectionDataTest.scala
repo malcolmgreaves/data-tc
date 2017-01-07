@@ -27,7 +27,9 @@ protected trait CollectionDataTest[D[_]] extends FunSuite {
   test("mapPartition") {
 
     def mapParition10(data: D[Int]): D[Int] =
-      data.mapParition { elements => elements.map(_ + 10) }
+      data.mapParition { elements =>
+        elements.map(_ + 10)
+      }
 
     val changed = mapParition10(data)
     assert(changed.toSeq !== data)
@@ -69,7 +71,10 @@ protected trait CollectionDataTest[D[_]] extends FunSuite {
   test("take") {
 
     def testTake(data: D[Int]): Boolean =
-      data.take(1) == Seq(1) && data.take(2) == Seq(1, 2) && data.take(3) == Seq(1, 2, 3)
+      data.take(1) == Seq(1) && data.take(2) == Seq(1, 2) && data.take(3) == Seq(
+        1,
+        2,
+        3)
 
     assert(testTake(data))
     assert(data.take(0).toSeq === Seq.empty[Int])

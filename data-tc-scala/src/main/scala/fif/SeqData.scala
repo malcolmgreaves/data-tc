@@ -1,6 +1,6 @@
 package fif
 
-import scala.language.{ higherKinds, implicitConversions }
+import scala.language.{higherKinds, implicitConversions}
 import scala.reflect.ClassTag
 
 object SeqData extends Data[Seq] {
@@ -9,7 +9,8 @@ object SeqData extends Data[Seq] {
   override def map[A, B: ClassTag](data: Seq[A])(f: (A) => B): Seq[B] =
     data.map(f)
 
-  override def mapParition[A, B: ClassTag](d: Seq[A])(f: Iterable[A] => Iterable[B]): Seq[B] =
+  override def mapParition[A, B: ClassTag](d: Seq[A])(
+      f: Iterable[A] => Iterable[B]): Seq[B] =
     f(d.toIterable).toSeq
 
   /** Apply a side-effecting function to each element. */
@@ -23,11 +24,13 @@ object SeqData extends Data[Seq] {
   override def filter[A](d: Seq[A])(f: A => Boolean): Seq[A] =
     d.filter(f)
 
-  override def aggregate[A, B: ClassTag](d: Seq[A])(zero: B)(seqOp: (B, A) => B, combOp: (B, B) => B): B =
+  override def aggregate[A, B: ClassTag](d: Seq[A])(
+      zero: B)(seqOp: (B, A) => B, combOp: (B, B) => B): B =
     d.aggregate(zero)(seqOp, combOp)
 
   /** Sort the dataset using a function f that evaluates each element to an orderable type */
-  override def sortBy[A, B: ClassTag](d: Seq[A])(f: (A) => B)(implicit ord: math.Ordering[B]): Seq[A] =
+  override def sortBy[A, B: ClassTag](d: Seq[A])(f: (A) => B)(
+      implicit ord: math.Ordering[B]): Seq[A] =
     d.toSeq.sortBy(f)
 
   /** Construct a traversable for the first k elements of a dataset. Will load into main mem. */
@@ -41,13 +44,16 @@ object SeqData extends Data[Seq] {
   override def toSeq[A](d: Seq[A]): Seq[A] =
     d.toSeq
 
-  override def flatMap[A, B: ClassTag](d: Seq[A])(f: A => TraversableOnce[B]): Seq[B] =
+  override def flatMap[A, B: ClassTag](d: Seq[A])(
+      f: A => TraversableOnce[B]): Seq[B] =
     d.flatMap(f)
 
-  override def flatten[A, B: ClassTag](d: Seq[A])(implicit asTraversable: A => TraversableOnce[B]): Seq[B] =
+  override def flatten[A, B: ClassTag](d: Seq[A])(
+      implicit asTraversable: A => TraversableOnce[B]): Seq[B] =
     d.flatten
 
-  override def groupBy[A, B: ClassTag](d: Seq[A])(f: A => B): Seq[(B, Iterable[A])] =
+  override def groupBy[A, B: ClassTag](d: Seq[A])(
+      f: A => B): Seq[(B, Iterable[A])] =
     d.groupBy(f).toSeq.map { case (a, b) => (a, b.toIterable) }
 
   /** This has type A as opposed to B >: A due to the RDD limitations */

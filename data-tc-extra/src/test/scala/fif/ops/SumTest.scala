@@ -27,4 +27,3 @@ class SumTest extends FunSuite {
   }
 
 }
-
