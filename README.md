@@ -31,31 +31,35 @@ We strive for high code coverage. Check out all of the tests:
 
 For a rather small use case, check out `Sum()`, which shows how to implement the common `sum` functionality on a `Data` type class instance with `Numeric` elements:
 
-    object Sum extends Serializable {
+```scala
+object Sum extends Serializable {
     
-      import datatc.Data
-      // Brings implicits in scope for things like `map`, `flatMap`, etc.
-      // as object oriented style infix notation. These are still using
-      // the type class method definitions!
-      import Data.ops._
+  import datatc.Data
+  // Brings implicits in scope for things like `map`, `flatMap`, etc.
+  // as object oriented style infix notation. These are still using
+  // the type class method definitions!
+  import Data.ops._
       
-      def apply[N: Numeric: ClassTag, D[_]: Data](data: D[N]): N = {
-        val add = implicitly[Numeric[N]].plus _
-        data.aggregate(implicitly[Numeric[N]].zero)(add, add)
-      }
+  def apply[N: Numeric: ClassTag, D[_]: Data](data: D[N]): N = {
+    val add = implicitly[Numeric[N]].plus _
+    data.aggregate(implicitly[Numeric[N]].zero)(add, add)
+  }
 
-      def apply[N: Numeric](first: N, numbers: N*): N = {
-        val add = implicitly[Numeric[N]].plus _
-        numbers.foldLeft(first)(add)
-      }
-    }
+  def apply[N: Numeric](first: N, numbers: N*): N = {
+    val add = implicitly[Numeric[N]].plus _
+    numbers.foldLeft(first)(add)
+  }
+}
+```
 
 With this `Sum` object, we can perform a summation over a `Traversable` instance:
 
-    // Brings into scope all Data typeclass evidence for Scala collections.
-    import datatc.scala._
-    Sum(Traversable(1.0, 2.0, 3.0)) == 6.0
-    Sum(1, 2, 3) == 6
+```scala
+// Brings into scope all Data typeclass evidence for Scala collections.
+import datatc.scala._
+Sum(Traversable(1.0, 2.0, 3.0)) == 6.0
+Sum(1, 2, 3) == 6
+```
 
 ### Repository Structure
 This project is organized into several sbt sub-projects:
@@ -78,7 +82,7 @@ We <3 contributions! We want this code to be useful and used! We use pull reques
 
 ### License
 
-Copyright 2015-2017 Malcolm Greaves
+Copyright 2015-2018 Malcolm Greaves
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
