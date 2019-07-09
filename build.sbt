@@ -3,7 +3,7 @@ organization in ThisBuild := "io.malcolmgreaves"
 version in ThisBuild := {
   val major: Int = 0
   val minor: Int = 0
-  val patch: Int = 0
+  val patch: Int = 1
   s"$major.$minor.$patch"
 }
 
