@@ -7,20 +7,20 @@ object SharedBuild {
   // //     Versions      // //
   // // // // // // // // // //
 
-  lazy val sparkVer     = "2.0.2"
-  lazy val parquetVer   = "1.6.0"
-  lazy val flinkVer     = "1.1.0"
+  lazy val sparkVer     = "2.4.3"
+  lazy val parquetVer   = "1.10.1"
+  lazy val flinkVer     = "1.8.1"
 
   // // // // // // // // // //
   // //    Dependencies   // //
   // // // // // // // // // //
 
   lazy val testDeps = Seq(
-    "org.scalatest" %% "scalatest" % "2.2.6" % Test
+    "org.scalatest" %% "scalatest" % "3.0.8" % Test
   )
 
   lazy val scalaTcDeps = Seq( 
-    "com.github.mpilquist" %% "simulacrum" % "0.7.0"
+    "com.github.mpilquist" %% "simulacrum" % "0.19.0"
   )
 
   lazy val flinkTcDeps = Seq(
